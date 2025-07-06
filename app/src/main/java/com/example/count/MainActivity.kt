@@ -21,10 +21,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -58,7 +55,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CountButtonScreen() {
-    var count: Int by remember { mutableIntStateOf(0) }
+    val counterState = remember { CounterState() }
 
     Column(
         modifier = Modifier
@@ -68,7 +65,7 @@ fun CountButtonScreen() {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Count: $count",
+            text = "Count: ${counterState.count}",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 16.dp)
@@ -79,9 +76,7 @@ fun CountButtonScreen() {
         ) {
             // Minus Button
             Button(
-                onClick = {
-                    if (count > 0) count--
-                },
+                onClick = { counterState.decrement() },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.error,
                 )
@@ -91,7 +86,7 @@ fun CountButtonScreen() {
 
             // Plus Button
             Button(
-                onClick = { count++ },
+                onClick = { counterState.increment() },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 )
@@ -104,7 +99,7 @@ fun CountButtonScreen() {
 
         // Reset Button
         OutlinedButton(
-            onClick = { count = 0 },
+            onClick = { counterState.reset() },
             modifier = Modifier.padding(top = 8.dp)
         ) {
             Text("Reset")
